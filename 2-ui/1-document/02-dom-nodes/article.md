@@ -98,41 +98,74 @@ Developer tools save screen space this way.
 On further DOM pictures we'll sometimes omit them when they are irrelevant. Such spaces usually do not affect how the document is displayed.
 ```
 
-## Autocorrection
 
-If the browser encounters malformed HTML, it automatically corrects it when making the DOM.
+## See it for yourself
 
-For instance, the top tag is always `<html>`. Even if it doesn't exist in the document, it will exist in the DOM, because the browser will create it. The same goes for `<body>`.
+To see the DOM structure in real-time, try [Live DOM Viewer](http://software.hixie.ch/utilities/js/live-dom-viewer/). Just type in the document, and it will show up as a DOM at an instant.
 
-As an example, if the HTML file is the single word `"Hello"`, the browser will wrap it into `<html>` and `<body>`, and add the required `<head>`, and the DOM will be:
+Another way to explore the DOM is to use the browser developer tools. Actually, that's what we use when developing.
 
+To do so, open the web page [elks.html](elks.html), turn on the browser developer tools and switch to the Elements tab.
 
-<div class="domtree"></div>
+It should look like this:
 
-<script>
-let node3 = {"name":"HTML","nodeType":1,"children":[{"name":"HEAD","nodeType":1,"children":[]},{"name":"BODY","nodeType":1,"children":[{"name":"#text","nodeType":3,"content":"Hello"}]}]}
+![](elks.png)
 
-drawHtmlTree(node3, 'div.domtree', 690, 150);
-</script>
+You can see the DOM, click on elements, see their details and so on.
 
-While generating the DOM, browsers automatically process errors in the document, close tags and so on.
+Please note that the DOM structure in developer tools is simplified. Text nodes are shown just as text. And there are no "blank" (space only) text nodes at all. That's fine, because most of the time we are interested in element nodes.
 
-A document with unclosed tags:
+Clicking the <span class="devtools" style="background-position:-328px -124px"></span> button in the left-upper corner allows us to choose a node from the webpage using a mouse (or other pointer devices) and "inspect" it (scroll to it in the Elements tab). This works great when we have a huge HTML page (and corresponding huge DOM) and would like to see the place of a particular element in it.
 
-```html no-beautify
-<p>Hello
-<li>Mom
-<li>and
-<li>Dad
-```
+Another way to do it would be just right-clicking on a webpage and selecting "Inspect" in the context menu.
 
-...will become a normal DOM as the browser reads tags and restores the missing parts:
+![](inspect.png)
 
-<div class="domtree"></div>
+At the right part of the tools there are the following subtabs:
+- **Styles** -- we can see CSS applied to the current element rule by rule, including built-in rules (gray). Almost everything can be edited in-place, including the dimensions/margins/paddings of the box below.
+- **Computed** -- to see CSS applied to the element by property: for each property we can see a rule that gives it (including CSS inheritance and such).
+- **Event Listeners** -- to see event listeners attached to DOM elements (we'll cover them in the next part of the tutorial).
+- ...and so on.
 
-<script>
-let node4 = {"name":"HTML","nodeType":1,"children":[{"name":"HEAD","nodeType":1,"children":[]},{"name":"BODY","nodeType":1,"children":[{"name":"P","nodeType":1,"children":[{"name":"#text","nodeType":3,"content":"Hello"}]},{"name":"LI","nodeType":1,"children":[{"name":"#text","nodeType":3,"content":"Mom"}]},{"name":"LI","nodeType":1,"children":[{"name":"#text","nodeType":3,"content":"and"}]},{"name":"LI","nodeType":1,"children":[{"name":"#text","nodeType":3,"content":"Dad"}]}]}]}
+The best way to study them is to click around. Most values are editable in-place.
 
-drawHtmlTree(node4, 'div.domtree', 690, 360);
-</script>
+## Interaction with console
 
+As we work the DOM, we also may want to apply JavaScript to it. Like: get a node and run some code to modify it, to see the result. Here are few tips to travel between the Elements tab and the console.
+
+For the start:
+
+1. Select the first `<li>` in the Elements tab.
+2. Press `key:Esc` -- it will open console right below the Elements tab.
+
+Now the last selected element is available as `$0`, the previously selected is `$1` etc.
+
+We can run commands on them. For instance, `$0.style.background = 'red'` makes the selected list item red, like this:
+
+![](domconsole0.png)
+
+That's how to get a node from Elements in Console.
+
+There's also a road back. If there's a variable referencing a DOM node, then we can use the command `inspect(node)` in Console to see it in the Elements pane.
+
+Or we can just output the DOM node in the console and explore "in-place", like `document.body` below:
+
+![](domconsole1.png)
+
+That's for debugging purposes of course. From the next chapter on we'll access and modify DOM using JavaScript.
+
+The browser developer tools are a great help in development: we can explore the DOM, try things and see what goes wrong.
+
+## Summary
+
+An HTML/XML document is represented inside the browser as the DOM tree.
+
+- Tags become element nodes and form the structure.
+- Text becomes text nodes.
+- ...etc, everything in HTML has its place in DOM, even comments.
+
+We can use developer tools to inspect DOM and modify it manually.
+
+Here we covered the basics, the most used and important actions to start with. There's an extensive documentation about Chrome Developer Tools at <https://developers.google.com/web/tools/chrome-devtools>. The best way to learn the tools is to click here and there, read menus: most options are obvious. Later, when you know them in general, read the docs and pick up the rest.
+
+DOM nodes have properties and methods that allow to travel between them, modify, move around the page and more. We'll get down to them in the next chapters.
