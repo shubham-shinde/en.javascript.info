@@ -274,52 +274,6 @@ Let's modify one of the examples above: replace `childNodes` with `children`. No
 </html>
 ```
 
-## More links: tables [#dom-navigation-tables]
-
-Till now we described the basic navigation properties.
-
-Certain types of DOM elements may provide additional properties, specific to their type, for convenience.
-
-Tables are a great example and a particularly important case for that.
-
-**The `<table>`** element supports (in addition to the given above) these properties:
-- `table.rows` -- the collection of `<tr>` elements of the table.
-- `table.caption/tHead/tFoot` -- references to elements `<caption>`, `<thead>`, `<tfoot>`.
-- `table.tBodies` -- the collection of `<tbody>` elements (can be many according to the standard).
-
-**`<thead>`, `<tfoot>`, `<tbody>`** elements provide the `rows` property:
-- `tbody.rows` -- the collection of `<tr>` inside.
-
-**`<tr>`:**
-- `tr.cells` -- the collection of `<td>` and `<th>` cells inside the given `<tr>`.
-- `tr.sectionRowIndex` -- the position (index) of the given `<tr>` inside the enclosing `<thead>/<tbody>/<tfoot>`.
-- `tr.rowIndex` -- the number of the `<tr>` in the table as a whole (including all table rows).
-
-**`<td>` and `<th>`:**
-- `td.cellIndex` -- the number of the cell inside the enclosing `<tr>`.
-
-An example of usage:
-
-```html run height=100
-<table id="table">
-  <tr>
-    <td>one</td><td>two</td>
-  </tr>
-  <tr>
-    <td>three</td><td>four</td>
-  </tr>
-</table>
-
-<script>
-  // get the content of the first row, second cell
-  alert( table.*!*rows[0].cells[1]*/!*.innerHTML ) // "two"
-</script>
-```
-
-The specification: [tabular data](https://html.spec.whatwg.org/multipage/tables.html).
-
-There are also additional navigation properties for HTML forms. We'll look at them later when we start working with forms.
-
 # Summary
 
 Given a DOM node, we can go to its immediate neighbours using navigation properties.
